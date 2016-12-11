@@ -5,19 +5,19 @@
 */
 
 //Includes
-#include <string>
+#include <vector>
 
 class Expense
 {
-    Public:
-        Expense();
-        virtual ~Expense();  //why virtual
-        
-        float const Expense::det_cost() const
-        {
-            return cost/(*purchasers).size(); 
-        }
-                
-        std::vector <Person> purchasers;
-        float cost;  
+public:
+    Expense();
+    virtual ~Expense();  //why virtual
+    
+    float const det_cost() const
+    {
+        return cost/purchasers.size(); 
+    }
+            
+    std::vector <Person> purchasers;
+    float cost;  
 }
