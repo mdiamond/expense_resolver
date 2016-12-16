@@ -19,8 +19,8 @@ public:
     {}
 
     // Overloaded constructor
-    Expense(float cost_):
-        cost(cost_)
+    Expense(float cost_, string &purchasers_):
+        cost(cost_), purchasers(purchasers_)
     {}
 
     // Destructor
@@ -35,7 +35,7 @@ public:
     }
 
     // A vector of people responsible for this expense
-    std::vector<Person &> purchasers;
+    std::string purchasers;
     // The cost of this expense
     float cost;
 }
