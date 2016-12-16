@@ -49,6 +49,11 @@ public:
         balance = 0;
     }
 
+    bool operator<(const Person &other_person) const
+    {
+        return amound_paid < other_person.amount_paid;
+    }
+
     // Return a string explaining this person's current status
     std::string const& to_str() const
     {
