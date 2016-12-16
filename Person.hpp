@@ -1,8 +1,11 @@
 /*
- * Matthew Diamond 2016
- * A class to represent a person. This class should be used to keep track of
- * what expenses a person is responsible for, and provide functions to
- * determine how much the person should pay for stuff, etc.
+ * Expense Resolver Program
+ * Chris Correll & Matthew Diamond 2016
+ * Person class
+ *
+ * This class contains information about a person, including their name, what
+ * expenses they owe money towards, and other information. It also provides
+ * some functions for calculating and transferring money.
  */
 
 #ifndef EXPENSE_RESOLVER_PERSON_HPP
@@ -21,8 +24,8 @@ public:
     {}
 
     // Overloaded constructor
-    Person(std::string &s, float f) :
-        name(s), amount_paid(f)
+    Person(std::string &name_, float amount_paid_) :
+        name(name_), amount_paid(amount_paid_)
     {}
 
     // Destructor
@@ -40,15 +43,17 @@ public:
     }
 
     // Pay another person based on this person's amount owed
-    void pay(Person &p)
+    void pay(Person &other_person)
     {
-        std::cout << name << " paying " << p.name << balance << std::endl;
-        p.amount_paid -= balance;
-        p.balance += balance;
+        std::cout << name << " paying " << other_person.name << balance
+                  << std::endl;
+        other_person.amount_paid -= balance;
+        other_person.balance += balance;
         amount_paid += balance;
         balance = 0;
     }
 
+    // < operator for comparisons
     bool operator<(const Person &other_person) const
     {
         return amound_paid < other_person.amount_paid;
@@ -77,9 +82,9 @@ private:
 };
 
 // Overload << operator
-std::ostream & operator<<(std::ostream &os, const Person &p)
+std::ostream & operator<<(std::ostream &os, const Person &person)
 {
-    return os << p.to_str();
+    return os << person.to_str();
 }
 
 #endif // EXPENSE_RESOLVER_PERSON_HPP

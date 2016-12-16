@@ -1,8 +1,11 @@
 /*
- * Chris Correll 2016 
- * A class to represent an expense. This class contains the cost of each item
- * and the people splitting it and provides functions to calculate the cost each
- * person owes on the item.
+ * Expense Resolver Program
+ * Chris Correll & Matthew Diamond 2016
+ * Expense class
+ *
+ * This class contains the cost of an item and a vector of references to the
+ * people splitting it and provides a function to calculate the amount each
+ * person owes towards the item.
  */
 
 #ifndef EXPENSE_RESOLVER_EXPENSE_HPP
@@ -19,7 +22,7 @@ public:
     {}
 
     // Overloaded constructor
-    Expense(float cost_, string &purchasers_):
+    Expense(float cost_, std::vector<Person &> purchasers_):
         cost(cost_), purchasers(purchasers_)
     {}
 
@@ -35,7 +38,7 @@ public:
     }
 
     // A vector of people responsible for this expense
-    std::string purchasers;
+    std::vector<Person &> purchasers;
     // The cost of this expense
     float cost;
 }
