@@ -50,7 +50,6 @@
 
 #include "Person.hpp"
 #include "Expense.hpp"
- balance sort map and then pay
 /*
  * Tokenize a string using whitespace as the delimeter.
  */
@@ -162,11 +161,20 @@ int main(void)
     }
     else std::cout << "Unable to open file" << std::endl; 
   
-    // Go through Purchasers calculate balance and then pay???    
+    // Go through Purchasers calculate there balance     
     for(auto it == purchasers.begin(); *it != purchasers.end(); it++)
     {
         it->calculate_balance();   
-        // pay other person? 
+    }
+
+    // Pay need to sort first?
+    auto it == purchasers.begin();
+    auto it_ == purchasers.end();
+    while(*it != *it_)
+    {
+        it->pay(*it_);
+        it++;
+        it_++
     }
 
 
