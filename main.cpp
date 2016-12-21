@@ -56,15 +56,23 @@
  */
 split(const std::string &line, std::vector<string> &split_data)
 {   
-    std::stringstream ss;
-    ss.str(line);
     std::string word;
-    // TODO: change tab delimeter to any whitespace using manual iteration
-    // through the line and std::isspace
-    while(std::getline(ss, word, "\t"))
+    for(auto it = line.begin(); it != line.end(); it++)
     {
+        if(*it != " ")
+        {
+            word.push_back(*it);
+        }
+        else
+        {
+            while(*it == " ")
+                {
+                    it++;     
+                }
         split_data.push_back(word);
-    }
+        word.clear();
+        }
+    } 
 }
 
 /*
@@ -154,6 +162,13 @@ int main(void)
     }
     else std::cout << "Unable to open file" << std::endl; 
   
+    // Go through Purchasers and pay???    
+    for(auto it == purchasers.begin(); *it != purchasers.end(); it++)
+    {
+        
+    }
+
+
     return 0;
 }
 

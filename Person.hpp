@@ -33,11 +33,18 @@ public:
     {}
 
     // Calculate how much this person owes based on expenses
+    // doesnt this need to check epxenses to make sure person is in list
     void calculate_balance()
     {
         for(auto it = expenses.begin(); it != expenses.end(); it ++)
         {
-            balance_total += it->determine_cost();
+            for(auto it_ = expenses.purchasers.begin(); it_ != expenses.purchasers.end(); it_++)
+            {
+                if(*it_ == name)
+                {
+                    balance_total += it->determine_cost();
+                }
+            }
         }
         balance = balance_total - amount_paid;
     }
