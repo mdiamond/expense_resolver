@@ -39,7 +39,7 @@ public:
 
 private:
     // Overload << operator
-    friend std::ostream & operator<<(std::ostream &, const Expense &);
+    friend std::ostream & operator << (std::ostream &, const Expense &);
 };
 
 #endif // EXPENSE_RESOLVER_EXPENSE_HPP

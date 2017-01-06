@@ -40,7 +40,7 @@ std::string const Expense::to_str() const
     return result;
 }
 
-std::ostream & operator<<(std::ostream &os, const Expense &expense)
+std::ostream & operator << (std::ostream &os, const Expense &expense)
 {
     return os << expense.to_str();
 }

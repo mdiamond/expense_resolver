@@ -34,7 +34,7 @@ public:
     void pay(Person &);
 
     // > operator for comparisons
-    bool operator>(const Person &) const;
+    bool operator > (const Person &) const;
 
     // Return a string explaining this person's current status
     std::string const to_str() const;
@@ -52,7 +52,7 @@ public:
 
 private:
     // Overload << operator
-    friend std::ostream & operator<<(std::ostream &, const Person &);
+    friend std::ostream & operator << (std::ostream &, const Person &);
 };
 
 #endif // EXPENSE_RESOLVER_PERSON_HPP

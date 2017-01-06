@@ -144,7 +144,7 @@ int main(void)
     // Iterate through expenses, ensure they all have correct records of who
     // is responsible for them, print them out
     std::cout << "Expenses:" << std::endl;
-    for(auto it = expenses.begin(); it != expenses.end(); it++)
+    for(auto it = expenses.begin(); it != expenses.end(); it ++)
     {
         it->distribute_expense();
         std::cout << *it << std::endl;
@@ -153,7 +153,7 @@ int main(void)
 
     // Iterate through people, calculate their balances, print them out, add
     // them to the vector of Person pointers
-    for(auto it = people.begin(); it != people.end(); it++)
+    for(auto it = people.begin(); it != people.end(); it ++)
     {
         it->second.calculate_balance();
         people_vec.push_back(&it->second);
@@ -164,12 +164,28 @@ int main(void)
               [](Person *p1, Person *p2){return (*p1) > (*p2);});
 
     // Print out the initial conditions
-    std::cout << "People: " << std::endl;
-    for(auto it = people_vec.begin(); it != people_vec.end(); it++)
+    std::cout << "Initial conditions: " << std::endl;
+    for(auto it = people_vec.begin(); it != people_vec.end(); it ++)
     {
         std::cout << **it << std::endl;
     }
     std::cout << std::endl;
+
+    // Propogate payments through to the person with the lowest balance
+    std::cout << "Transactions: " << std::endl;
+    for(unsigned int i = 0; i < people_vec.size() - 1; i ++)
+    {
+        std::cout << i + 1 << ": ";
+        people_vec[i]->pay(*people_vec[i + 1]);
+    }
+    std::cout << std::endl;
+
+    // Print out final conditions
+    std::cout << "Final conditions: " << std::endl;
+    for(auto it = people_vec.begin(); it != people_vec.end(); it ++)
+    {
+        std::cout << **it << std::endl;
+    }
 
     return 0;
 }
