@@ -18,14 +18,8 @@
 class Expense
 {
 public:
-    // Default constructor
-    Expense();
-
-    // Overloaded constructor
+    // Constructor
     Expense(std::vector<Person *>, float);
-
-    // Destructor
-    virtual ~Expense();
 
     // Return the cost of this item per person based on how many people are
     // responsible for paying for it

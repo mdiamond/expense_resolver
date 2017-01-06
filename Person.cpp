@@ -7,18 +7,13 @@
 #include "Expense.hpp"
 #include "Person.hpp"
 
-Person::Person()
-{}
-
 Person::Person(std::string &name_, float amount_paid_):
     name(name_), amount_paid(amount_paid_)
 {}
 
-Person::~Person()
-{}
-
 void Person::calculate_balance()
 {
+    balance = 0;
     for(auto it = expenses.begin(); it != expenses.end(); it ++)
     {
         balance_total += (*it)->determine_cost();
@@ -38,7 +33,7 @@ void Person::pay(Person &other_person)
 
 bool Person::operator<(const Person &other_person) const
 {
-    return amount_paid < other_person.amount_paid;
+    return balance < other_person.balance;
 }
 
 std::string const Person::to_str() const

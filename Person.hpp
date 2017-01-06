@@ -22,13 +22,10 @@ class Person
 {
 public:
     // Default constructor
-    Person();
+    Person() = default;
 
-    // Overloaded constructor
+    // Constructor
     Person(std::string &, float);
-
-    // Destructor
-    virtual ~Person();
 
     // Calculate how much this person owes based on expenses
     void calculate_balance();

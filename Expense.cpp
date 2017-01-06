@@ -6,14 +6,8 @@
 
 #include "Expense.hpp"
 
-Expense::Expense()
-{}
-
 Expense::Expense(std::vector<Person *> purchasers_, float cost_):
     purchasers(purchasers_), cost(cost_)
-{}
-
-Expense::~Expense()
 {}
 
 float Expense::determine_cost() const
