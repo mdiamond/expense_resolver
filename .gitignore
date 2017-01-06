@@ -32,6 +32,3 @@ bin
 # Vim files
 *.swp
 *.swo
-
-# Text files
-*.txt
