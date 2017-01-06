@@ -31,17 +31,17 @@ void Person::pay(Person &other_person)
     balance = 0;
 }
 
-bool Person::operator<(const Person &other_person) const
+bool Person::operator>(const Person &other_person) const
 {
-    return balance < other_person.balance;
+    return balance > other_person.balance;
 }
 
 std::string const Person::to_str() const
 {
-    return name + " paid $" + std::to_string(amount_paid) + ", owes $"
-           + std::to_string(balance) + ", and is responsible for "
+    return name + " paid $" + std::to_string(amount_paid) + ", is responsible for "
            + std::to_string(expenses.size()) + " expenses worth a total of $"
-           + std::to_string(balance_total);
+           + std::to_string(balance_total) + ", and has a balance of $"
+           + std::to_string(balance);
 }
 
 std::ostream & operator<<(std::ostream &os, const Person &person)

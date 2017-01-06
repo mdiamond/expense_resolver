@@ -42,6 +42,7 @@
  * equivalent to the total cost of the expenses for the program to work properly.
  */
 
+#include <algorithm>
 #include <fstream>
 #include <map>
 #include <string>
@@ -92,6 +93,8 @@ int main(void)
     // Vector of expenses, input stream for expenses.txt
     std::vector<Expense> expenses;
     std::ifstream expenses_txt("expenses.txt");
+    // Vector of Person pointers to allow sorting  by balance
+    std::vector<Person *> people_vec;
    
     if(people_txt.is_open())
     {
@@ -99,16 +102,12 @@ int main(void)
         std::string name;
         char ch;
         float amount_paid;
-        unsigned int line_num = 0;
 
         // Iterate through tokens in the file, 3 per line, populate the above
         // variables, and initialize Person objects in the people map
         while(people_txt >> name >> ch >> amount_paid)
         {
-            std::cout << "people.txt line " << line_num << std::endl;
-            std::cout << name << " " << ch << " " << amount_paid << std::endl;
             people[ch] = Person(name, amount_paid);
-            line_num ++;
         }
         people_txt.close();
     }
@@ -126,17 +125,13 @@ int main(void)
         std::vector<Person *> purchasers;
         float cost;
         std::string chars;
-        unsigned int line_num = 0;
 
         // Iterate through tokens in the file, 2 per line, populate the above
         // variables, and initialize Expense objects in the expenses vector
         while(expenses_txt >> cost >> chars)
         {
-            std::cout << "expenses.txt line " << line_num << std::endl;
-            std::cout << cost << " " << chars << std::endl;
             purchasers = chars_to_people(chars, people);
             expenses.push_back(Expense(purchasers, cost));
-            line_num ++;
         }
         expenses_txt.close();
     }
@@ -148,18 +143,33 @@ int main(void)
 
     // Iterate through expenses, ensure they all have correct records of who
     // is responsible for them, print them out
+    std::cout << "Expenses:" << std::endl;
     for(auto it = expenses.begin(); it != expenses.end(); it++)
     {
         it->distribute_expense();
         std::cout << *it << std::endl;
     }
+    std::cout << std::endl;
 
-    // Iterate through people, calculate their balances, print them out
+    // Iterate through people, calculate their balances, print them out, add
+    // them to the vector of Person pointers
     for(auto it = people.begin(); it != people.end(); it++)
     {
         it->second.calculate_balance();
-        std::cout << it->second << std::endl;
+        people_vec.push_back(&it->second);
     }
+
+    // Sort vector of people using a lambda function
+    std::sort(people_vec.begin(), people_vec.end(),
+              [](Person *p1, Person *p2){return (*p1) > (*p2);});
+
+    // Print out the initial conditions
+    std::cout << "People: " << std::endl;
+    for(auto it = people_vec.begin(); it != people_vec.end(); it++)
+    {
+        std::cout << **it << std::endl;
+    }
+    std::cout << std::endl;
 
     return 0;
 }

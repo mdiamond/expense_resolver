@@ -33,8 +33,8 @@ public:
     // Pay another person based on this person's amount owed
     void pay(Person &);
 
-    // < operator for comparisons
-    bool operator<(const Person &) const;
+    // > operator for comparisons
+    bool operator>(const Person &) const;
 
     // Return a string explaining this person's current status
     std::string const to_str() const;
@@ -42,11 +42,11 @@ public:
     // This person's name
     std::string name;
     // How much this person has already paid
-    float amount_paid;
+    float amount_paid = 0;
     // How much this person owes to others based on total balance
-    float balance;
+    float balance = 0;
     // How much this person owes total
-    float balance_total;
+    float balance_total = 0;
     // A vector of expenses that this person is responsible for
     std::vector<Expense *> expenses;
 

@@ -25,7 +25,7 @@ void Expense::distribute_expense()
 
 std::string const Expense::to_str() const
 {
-    std::string result = "Expense worth $" + std::to_string(cost) + " to be split between "
+    std::string result = "$" + std::to_string(cost) + " expense to be split between "
                          + std::to_string(purchasers.size()) + " people (";
     for(auto it = purchasers.begin(); it != purchasers.end(); it ++)
     {

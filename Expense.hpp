@@ -35,7 +35,7 @@ public:
     // A vector of people responsible for this expense
     std::vector<Person *> purchasers;
     // The cost of this expense
-    float cost;
+    float cost = 0;
 
 private:
     // Overload << operator
