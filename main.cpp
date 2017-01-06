@@ -82,17 +82,37 @@ std::vector<Person *> chars_to_people(std::string &chars,
 }
 
 /*
+ * Print command line argument help message
+ */
+void print_arg_msg()
+{
+    std::cout << "First argument must be the text file containing "
+              << "information about people" << std::endl;
+    std::cout << "Second argument must be the text file containing "
+              << "information about expenses" << std::endl;
+}
+
+
+/*
  * Main function.
  */
-int main(void)
+int main(int argc, char *argv[])
 {
+    if(argc != 3)
+    {
+        std::cout << "Incorrect number of command line arguments"
+                  << std::endl;
+        print_arg_msg();
+        return 1;
+    }
+
     // Map of people keyed on their associated characters, input stream for
     // people.txt
     std::map<char, Person> people;
-    std::ifstream people_txt("people.txt");
+    std::ifstream people_txt(argv[1]);
     // Vector of expenses, input stream for expenses.txt
     std::vector<Expense> expenses;
-    std::ifstream expenses_txt("expenses.txt");
+    std::ifstream expenses_txt(argv[2]);
     // Vector of Person pointers to allow sorting  by balance
     std::vector<Person *> people_vec;
    
@@ -113,7 +133,8 @@ int main(void)
     }
     else
     {
-        std::cout << "Unable to open file people.txt" << std::endl;
+        std::cout << "Unable to open file " << argv[1] << std::endl;
+        print_arg_msg();
         return 1;
     }
    
@@ -137,7 +158,8 @@ int main(void)
     }
     else
     {
-        std::cout << "Unable to open file expenses.txt" << std::endl;
+        std::cout << "Unable to open file " << argv[2] << std::endl;
+        print_arg_msg();
         return 1;
     }
 
