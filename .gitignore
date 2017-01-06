@@ -27,7 +27,11 @@
 *.exe
 *.out
 *.app
+bin
 
 # Vim files
 *.swp
 *.swo
+
+# Text files
+*.txt

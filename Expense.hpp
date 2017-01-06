@@ -11,37 +11,42 @@
 #ifndef EXPENSE_RESOLVER_EXPENSE_HPP
 #define EXPENSE_RESOLVER_EXPENSE_HPP
 
-// Includes
 #include <vector>
+
+#include "Person.hpp"
 
 class Expense
 {
 public:
     // Default constructor
-    Expense()
-    {}
+    Expense();
 
     // Overloaded constructor
-    Expense(float cost_, std::vector<Person &> purchasers_):
-        cost(cost_), purchasers(purchasers_)
-    {}
+    Expense(std::vector<Person *>, float);
 
     // Destructor
-    virtual ~Expense()
-    {}
+    virtual ~Expense();
 
     // Return the cost of this item per person based on how many people are
     // responsible for paying for it
-    float determine_cost() const
-    {
-        return cost / purchasers.size();
-    }
+    float determine_cost() const;
+
+    // Add this expense to the expenses vector in each Person object from the
+    // purchasers vector
+    void distribute_expense();
+
+    // Return a string explaining this expense
+    std::string const to_str() const;
 
     // A vector of people responsible for this expense
-    std::vector<Person &> purchasers;
+    std::vector<Person *> purchasers;
     // The cost of this expense
     float cost;
-}
+
+private:
+    // Overload << operator
+    friend std::ostream & operator<<(std::ostream &, const Expense &);
+};
 
 #endif // EXPENSE_RESOLVER_EXPENSE_HPP
 

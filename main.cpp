@@ -21,7 +21,7 @@
  * Example files...
  *
  * expenses.txt
- * 250.00
+ * 250.00\t*
  * 300.00\tmc
  * 400.00\t\tmc
  *
@@ -30,7 +30,7 @@
  * Matthew\tm\t450.00
  *
  * This example would result in all three expenses being split evenly between
- * Chris and Matthew, as providing no characters for an expense defaults to
+ * Chris and Matthew, as providing the '*' character for an expense defaults to
  * splitting it evenly, and all other expenses are specifically split between
  * Chris and Matthew. In this case, the result would be that Matthew needs to
  * pay Chris 25, so that at the end they have both paid a total of 475.
@@ -43,48 +43,40 @@
  */
 
 #include <fstream>
-#include <iostream>
+#include <map>
 #include <string>
-#include <sstream>
 #include <vector>
 
 #include "Person.hpp"
 #include "Expense.hpp"
-/*
- * Tokenize a string using whitespace as the delimeter.
- */
-split(const std::string &line, std::vector<string> &split_data)
-{   
-    std::string word;
-    for(auto it = line.begin(); it != line.end(); it++)
-    {
-        if(*it != " ")
-        {
-            word.push_back(*it);
-        }
-        else
-        {
-            while(*it == " ")
-                {
-                    it++;     
-                }
-        split_data.push_back(word);
-        word.clear();
-        }
-    } 
-}
 
 /*
- * Turn a string of characters into a vector of Person references.
+ * Turn a string of characters into a vector of Person pointers.
  */
-std::vector<Person &> chars_to_people(std::string &chars,
-                                      std::map<Person> &people)
+std::vector<Person *> chars_to_people(std::string &chars,
+                                      std::map<char, Person> &people)
 {
-    std::vector<Person &> purchasers;
-    for(auto it = chars.begin(); it != chars.end(); it ++)
+    // Resulting vector of Person pointers
+    std::vector<Person *> purchasers;
+
+    // If chars string is just "*", it means the expense is shared equally
+    // between all
+    if(chars == "*")
     {
-        purchasers.push_back(people[*it]);
+        for(auto it = people.begin(); it != people.end(); it ++)
+        {
+            purchasers.push_back(&it->second);
+        }
     }
+    // Otherwise, determine who is responsible for the expense normally
+    else
+    {
+        for(auto it = chars.begin(); it != chars.end(); it ++)
+        {
+            purchasers.push_back(&people[*it]);
+        }
+    }
+
     return purchasers;
 }
 
@@ -93,90 +85,81 @@ std::vector<Person &> chars_to_people(std::string &chars,
  */
 int main(void)
 {
-    // Current line from an input file, map of people keyed on their associated
-    // characters, input stream for people.txt
-    std::string line;
+    // Map of people keyed on their associated characters, input stream for
+    // people.txt
     std::map<char, Person> people;
     std::ifstream people_txt("people.txt");
-   
-    if(people_txt.is_open())
-    {
-        // Current person's name, associated character, amount paid, and vector
-        // of words from the current line
-        std::string name;
-        char ch;
-        float amount_paid;
-        vector<string> split_data;
-
-        // Iterate through lines in the file, split them into words, populate
-        // the above variables, and initialize Person objects in the people map
-        while(getline(myfile,line))
-        {
-
-            split(line, split_data);
-
-            name = split_data[0];
-            ch = split_data[1][0];
-            amount_paid = atof(split_data[2].c_str);
-
-            people[ch] = Person(name, amount_paid);
-
-            split_data.clear();
-        }
-        people_txt.close();
-    }
-    else std::cout << "Unable to open file" << std::endl; 
-    
     // Vector of expenses, input stream for expenses.txt
     std::vector<Expense> expenses;
     std::ifstream expenses_txt("expenses.txt");
+   
+    if(people_txt.is_open())
+    {
+        // Current person's name, associated character, amount paid
+        std::string name;
+        char ch;
+        float amount_paid;
+        unsigned int line_num = 0;
+
+        // Iterate through tokens in the file, 3 per line, populate the above
+        // variables, and initialize Person objects in the people map
+        while(people_txt >> name >> ch >> amount_paid)
+        {
+            std::cout << "people.txt line " << line_num << std::endl;
+            std::cout << name << " " << ch << " " << amount_paid << std::endl;
+            people[ch] = Person(name, amount_paid);
+            line_num ++;
+        }
+        people_txt.close();
+    }
+    else
+    {
+        std::cout << "Unable to open file people.txt" << std::endl;
+        return 1;
+    }
    
     if(expenses_txt.is_open())
     {
         // Vector of references to Person objects (purchasers of the expense),
         // cost of the expense, string of characters representing which people
-        // are purchasers of the expense, and vector of words from the current
-        // line
-        std::vector<Person &> purchasers;
+        // are purchasers of the expense
+        std::vector<Person *> purchasers;
         float cost;
-        std::string chs;
-        vector<string> split_data;
+        std::string chars;
+        unsigned int line_num = 0;
 
-        // Iterate through lines in the file, split them into words, populate
-        // the above variables, and initialize Expense objects in the expenses
-        // vector
-        while(getline(expenses_txt, line))
+        // Iterate through tokens in the file, 2 per line, populate the above
+        // variables, and initialize Expense objects in the expenses vector
+        while(expenses_txt >> cost >> chars)
         {
-            split(line, split_data);
-
-            cost = atof(split_data[0].c_str());
-            chs = split_data[1];
-
-            purchasers = chars_to_people(chs, people);
-
-            expenses.push_back(Expense(cost, purchasers));
-            split_data.clear();
+            std::cout << "expenses.txt line " << line_num << std::endl;
+            std::cout << cost << " " << chars << std::endl;
+            purchasers = chars_to_people(chars, people);
+            expenses.push_back(Expense(purchasers, cost));
+            line_num ++;
         }
         expenses_txt.close();
     }
-    else std::cout << "Unable to open file" << std::endl; 
-  
-    // Go through Purchasers calculate there balance     
-    for(auto it == purchasers.begin(); *it != purchasers.end(); it++)
+    else
     {
-        it->calculate_balance();   
+        std::cout << "Unable to open file expenses.txt" << std::endl;
+        return 1;
     }
 
-    // Pay need to sort first?
-    auto it == purchasers.begin();
-    auto it_ == purchasers.end();
-    while(*it != *it_)
+    // Iterate through expenses, ensure they all have correct records of who
+    // is responsible for them, print them out
+    for(auto it = expenses.begin(); it != expenses.end(); it++)
     {
-        it->pay(*it_);
-        it++;
-        it_++
+        it->distribute_expense();
+        std::cout << *it << std::endl;
     }
 
+    // Iterate through people, calculate their balances, print them out
+    for(auto it = people.begin(); it != people.end(); it++)
+    {
+        it->second.calculate_balance();
+        std::cout << it->second << std::endl;
+    }
 
     return 0;
 }
