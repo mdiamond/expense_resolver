@@ -1,6 +1,6 @@
-100.00 *
+100.00 *    #gas bill or some shit
 200.00 ct
 100.00 mt
-100.00 mc
+100.00 mc   #alcohol for a party?
 150.00 mct
-550.00 *
+550.00 *    #some like rent or whatever

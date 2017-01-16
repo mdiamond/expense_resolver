@@ -127,7 +127,11 @@ int main(int argc, char *argv[])
         // variables, and initialize Person objects in the people map
         while(people_txt >> name >> ch >> amount_paid)
         {
+            // Create a person with the extracted name and amount paid, insert
+            // them into the map at index ch
             people[ch] = Person(name, amount_paid);
+            // Ignore the rest of the line, if it exists, to allow for comments
+            people_txt.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
         people_txt.close();
     }
@@ -151,8 +155,13 @@ int main(int argc, char *argv[])
         // variables, and initialize Expense objects in the expenses vector
         while(expenses_txt >> cost >> chars)
         {
+            // Create a vector of purchasers for the expense using the
+            // extracted chars
             purchasers = chars_to_people(chars, people);
+            // Create an expense with the above purchasers and extracted cost
             expenses.push_back(Expense(purchasers, cost));
+            // Ignore the rest of the line, if it exists, to allow for comments
+            expenses_txt.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
         expenses_txt.close();
     }
