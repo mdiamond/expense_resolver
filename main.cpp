@@ -115,6 +115,10 @@ int main(int argc, char *argv[])
     std::ifstream expenses_txt(argv[2]);
     // Vector of Person pointers to allow sorting  by balance
     std::vector<Person *> people_vec;
+    // Total amount of all expenses
+    float total_expenses = 0;
+    // Total amount of all balances
+    float total_amount_paid = 0;
    
     if(people_txt.is_open())
     {
@@ -132,6 +136,7 @@ int main(int argc, char *argv[])
             people[ch] = Person(name, amount_paid);
             // Ignore the rest of the line, if it exists, to allow for comments
             people_txt.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            total_amount_paid += amount_paid;
         }
         people_txt.close();
     }
@@ -150,18 +155,19 @@ int main(int argc, char *argv[])
         std::vector<Person *> purchasers;
         float cost;
         std::string chars;
+        std::string name;
 
-        // Iterate through tokens in the file, 2 per line, populate the above
+        // Iterate through tokens in the file, 3 per line, populate the above
         // variables, and initialize Expense objects in the expenses vector
-        while(expenses_txt >> cost >> chars)
+        while(expenses_txt >> cost >> chars >> name)
         {
             // Create a vector of purchasers for the expense using the
             // extracted chars
             purchasers = chars_to_people(chars, people);
             // Create an expense with the above purchasers and extracted cost
-            expenses.push_back(Expense(purchasers, cost));
-            // Ignore the rest of the line, if it exists, to allow for comments
+            expenses.push_back(Expense(name, purchasers, cost));
             expenses_txt.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            total_expenses += cost;
         }
         expenses_txt.close();
     }
@@ -169,6 +175,22 @@ int main(int argc, char *argv[])
     {
         std::cout << "Unable to open file " << argv[2] << std::endl;
         print_arg_msg();
+        return 1;
+    }
+
+    std::cout << "Total expenses: " << total_expenses << std::endl;
+    std::cout << "Total amount paid: " << total_amount_paid << std::endl;
+    std::cout << std::endl;
+
+    // If the amounts of money involved don't make sense, print an error
+    // message and exit
+    float expenses_amount_paid_difference = total_expenses - total_amount_paid;
+    if(expenses_amount_paid_difference > 1
+       || expenses_amount_paid_difference < -1)
+    {
+        std::cout << "There is a discrepancy between how much money was spent "
+                  << "and how much total money everyone is responsible for. "
+                  << "There is likely an error in the input data. Exiting.";
         return 1;
     }
 

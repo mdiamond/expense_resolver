@@ -1,6 +1,6 @@
-100.00 *    #gas bill or some shit
-200.00 ct
-100.00 mt
-100.00 mc   #alcohol for a party?
-150.00 mct
-550.00 *    #some like rent or whatever
+100.00 *    gas bill
+200.00 ct   gardening stuff
+100.00 mt   heb
+100.00 mc   electric bill
+150.00 mct  costco
+550.00 *    rent

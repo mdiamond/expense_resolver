@@ -6,8 +6,8 @@
 
 #include "Expense.hpp"
 
-Expense::Expense(std::vector<Person *> purchasers_, float cost_):
-    purchasers(purchasers_), cost(cost_)
+Expense::Expense(std::string name_, std::vector<Person *> purchasers_, float cost_):
+    name(name_), purchasers(purchasers_), cost(cost_)
 {}
 
 float Expense::determine_cost() const
@@ -25,7 +25,8 @@ void Expense::distribute_expense()
 
 std::string const Expense::to_str() const
 {
-    std::string result = "$" + std::to_string(cost) + " expense to be split between "
+    std::string result = name + ", " + "$" + std::to_string(cost)
+                         + " expense to be split between "
                          + std::to_string(purchasers.size()) + " people (";
     for(auto it = purchasers.begin(); it != purchasers.end(); it ++)
     {

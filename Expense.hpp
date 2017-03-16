@@ -19,7 +19,7 @@ class Expense
 {
 public:
     // Constructor
-    Expense(std::vector<Person *>, float);
+    Expense(std::string, std::vector<Person *>, float);
 
     // Return the cost of this item per person based on how many people are
     // responsible for paying for it
@@ -32,6 +32,8 @@ public:
     // Return a string explaining this expense
     std::string const to_str() const;
 
+    // The name of the expense
+    std::string name;
     // A vector of people responsible for this expense
     std::vector<Person *> purchasers;
     // The cost of this expense
