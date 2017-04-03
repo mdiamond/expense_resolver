@@ -159,15 +159,30 @@ int main(int argc, char *argv[])
 
         // Iterate through tokens in the file, 3 per line, populate the above
         // variables, and initialize Expense objects in the expenses vector
-        while(expenses_txt >> cost >> chars >> name)
+        while(expenses_txt >> cost >> chars)
         {
+            // Read the name of the expense by skipping leading whitespace,
+            // then reading the following characters up to the newline into
+            // the name string
+            char ch;
+            while(isspace((ch = expenses_txt.get())))
+            {}
+            name += ch;
+            while((ch = expenses_txt.get()) != '\n')
+            {
+                if(ch != '\n')
+                {
+                    name += ch;
+                }
+            }
             // Create a vector of purchasers for the expense using the
             // extracted chars
             purchasers = chars_to_people(chars, people);
             // Create an expense with the above purchasers and extracted cost
             expenses.push_back(Expense(name, purchasers, cost));
-            expenses_txt.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             total_expenses += cost;
+            // Reset expense name
+            name = "";
         }
         expenses_txt.close();
     }
